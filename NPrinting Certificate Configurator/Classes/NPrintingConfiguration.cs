@@ -26,12 +26,12 @@ using System.Threading.Tasks;
 
 namespace NPrinting_Certificate_Configurator.Classes
 {
-    class NPrinting
+    class NPrintingConfiguration
     {
         /// <summary>
         /// Gets status updates when restarting service.
         /// </summary>
-        public event EventHandler<SeviceStatusChangedEventArgs> SeviceStatusChanged;
+        public event EventHandler<ServiceStatusChangedEventArgs> ServiceStatusChanged;
 
         public struct NConfig
         {
@@ -43,7 +43,7 @@ namespace NPrinting_Certificate_Configurator.Classes
             public string SSLKeyFile;
         }
 
-        public NPrinting()
+        public NPrintingConfiguration()
         {
             LoadNPrintingPaths();
         }
@@ -181,7 +181,7 @@ namespace NPrinting_Certificate_Configurator.Classes
         {
             var service = new ServiceController("Qlik NPrinting Web Engine");
             TimeSpan timeout = TimeSpan.FromMinutes(1);
-            var args = new SeviceStatusChangedEventArgs();
+            var args = new ServiceStatusChangedEventArgs();
 
             try
             {
@@ -190,31 +190,31 @@ namespace NPrinting_Certificate_Configurator.Classes
                     // Stop Service
                     service.Stop();
                     args.Status = "Stopping NPrinting web engine service...";
-                    OnSeviceStatusChanged(args);
+                    OnServiceStatusChanged(args);
                     service.WaitForStatus(ServiceControllerStatus.Stopped, timeout);
                 }
 
                 //Restart service
                 service.Start();
                 args.Status = "Starting NPrinting web engine service...";
-                OnSeviceStatusChanged(args);
+                OnServiceStatusChanged(args);
                 service.WaitForStatus(ServiceControllerStatus.Running, timeout);
 
                 args.Status = "Finished restarting service.";
-                OnSeviceStatusChanged(args);
+                OnServiceStatusChanged(args);
             }
             catch (InvalidOperationException)
             {
                 args.Status = "Failed to restart service.";
                 args.ErrorMessage = "The service was not found on this computer.";
-                OnSeviceStatusChanged(args);
+                OnServiceStatusChanged(args);
                 return false;
             }
             catch (System.ServiceProcess.TimeoutException)
             {
                 args.Status = "Failed to restart service.";
                 args.ErrorMessage = "The Qlik NPrinting Web Engine service timed out.";
-                OnSeviceStatusChanged(args);
+                OnServiceStatusChanged(args);
                 return false;
             }
             
@@ -225,9 +225,9 @@ namespace NPrinting_Certificate_Configurator.Classes
         /// Event to raise for status changes when restarting service.
         /// </summary>
         /// <param name="e">Status details to pass with event-</param>
-        protected virtual void OnSeviceStatusChanged(SeviceStatusChangedEventArgs e)
+        protected virtual void OnServiceStatusChanged(ServiceStatusChangedEventArgs e)
         {
-            EventHandler<SeviceStatusChangedEventArgs> handler = SeviceStatusChanged;
+            EventHandler<ServiceStatusChangedEventArgs> handler = ServiceStatusChanged;
             handler?.Invoke(this, e);
         }
     }

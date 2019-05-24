@@ -34,7 +34,7 @@ namespace NPrinting_Certificate_Configurator
 {
     public partial class FrmMain : Form
     {
-        private readonly NPrinting _np;
+        private readonly NPrintingConfiguration _np;
 
         public FrmMain()
         {
@@ -42,7 +42,7 @@ namespace NPrinting_Certificate_Configurator
 
             try
             {
-                _np = new NPrinting();
+                _np = new NPrintingConfiguration();
             }
             catch (FileNotFoundException ex)
             {
@@ -52,7 +52,7 @@ namespace NPrinting_Certificate_Configurator
                 Process.GetCurrentProcess().Kill();
             }
 
-            _np.SeviceStatusChanged += Np_SeviceStatusChanged;
+            _np.ServiceStatusChanged += Np_ServiceStatusChanged;
         }
 
         private void BtnBrowse_Click(object sender, EventArgs e)
@@ -114,7 +114,7 @@ namespace NPrinting_Certificate_Configurator
                         $"{_np.WebConsole.ConfigFile}.bak", overwrite: true);
                 }
 
-                toolStripServiceStatus.Text = "Coverting and installing certificate...";
+                toolStripServiceStatus.Text = "Converting and installing certificate...";
 
                 cert.SavePublicKeyPem(_np.NewsStand.SSLCertFile);
                 cert.SavePrivateKeyPem(_np.NewsStand.SSLKeyFile);
@@ -172,7 +172,7 @@ namespace NPrinting_Certificate_Configurator
             return result;
         }
 
-        private void Np_SeviceStatusChanged(object sender, SeviceStatusChangedEventArgs e)
+        private void Np_ServiceStatusChanged(object sender, ServiceStatusChangedEventArgs e)
         {
             toolStripServiceStatus.Text = e.Status;
 

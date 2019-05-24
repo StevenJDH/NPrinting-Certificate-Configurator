@@ -24,7 +24,7 @@ using System.Threading.Tasks;
 
 namespace NPrinting_Certificate_Configurator.Classes
 {
-    public class SeviceStatusChangedEventArgs : EventArgs
+    public class ServiceStatusChangedEventArgs : EventArgs
     {
         public string Status { get; set; }
         public string ErrorMessage { get; set; }

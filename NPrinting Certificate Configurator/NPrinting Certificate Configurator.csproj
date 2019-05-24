@@ -55,9 +55,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Classes\NPrinting.cs" />
+    <Compile Include="Classes\NPrintingConfiguration.cs" />
     <Compile Include="Classes\RSACryptoService.cs" />
-    <Compile Include="Classes\SeviceStatusChangedEventArgs.cs" />
+    <Compile Include="Classes\ServiceStatusChangedEventArgs.cs" />
     <Compile Include="Extensions\ConvertExtension.cs" />
     <Compile Include="Extensions\X509Certificate2Extensions.cs" />
     <Compile Include="FrmMain.cs">
