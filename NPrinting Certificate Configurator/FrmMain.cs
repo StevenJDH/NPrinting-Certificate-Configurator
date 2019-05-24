@@ -194,7 +194,7 @@ namespace NPrinting_Certificate_Configurator
 
         private void MnuAbout_Click(object sender, EventArgs e)
         {
-            MessageBox.Show($"{Application.ProductName} {Application.ProductVersion} Beta 1\n\n" +
+            MessageBox.Show($"{Application.ProductName} {Application.ProductVersion} (Pre-Release)\n\n" +
                 "Steven Jenkins De Haro\n" +
                 "Microsoft .NET Framework 4.7.2\n\n" +
                 "Special thanks to Sebastian Linser as this was his idea.",
