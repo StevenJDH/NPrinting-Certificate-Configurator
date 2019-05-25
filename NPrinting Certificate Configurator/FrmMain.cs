@@ -134,7 +134,7 @@ namespace NPrinting_Certificate_Configurator
                                     "Do you want to restart the Qlik NPrinting Web Engine service?",
                         Application.ProductName, MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes)
                 {
-                    await Task.Run(RestartService);
+                    await RestartServiceAsync();
                 }
             }
             catch (CryptographicException)
@@ -153,11 +153,9 @@ namespace NPrinting_Certificate_Configurator
             }
         }
 
-        private bool RestartService()
+        private async Task RestartServiceAsync()
         {
-            bool result;
-
-            if ((result =_np.RestartWebEngineService()) == true)
+            if (await _np.RestartWebEngineServiceAsync())
             {
                 MessageBox.Show("The Qlik NPrinting Web Engine service was restarted successfully.",
                     Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -168,8 +166,6 @@ namespace NPrinting_Certificate_Configurator
                                 "Please see status below for more information.",
                     Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
-
-            return result;
         }
 
         private void Np_ServiceStatusChanged(object sender, ServiceStatusChangedEventArgs e)
@@ -189,7 +185,7 @@ namespace NPrinting_Certificate_Configurator
 
         private async void MnuRestartService_Click(object sender, EventArgs e)
         {
-            await Task.Run(RestartService);
+            await RestartServiceAsync();
         }
 
         private void MnuAbout_Click(object sender, EventArgs e)
@@ -220,7 +216,7 @@ namespace NPrinting_Certificate_Configurator
         private void MnuRestoreBackup_Click(object sender, EventArgs e)
         {
             if (MessageBox.Show("Are you sure you want to restore your configuration backups? " +
-                                "This will also remove the third-party certificates.",
+                                "This will also remove the third-party certificate.",
                     Application.ProductName, MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
             {
                 return;

@@ -174,10 +174,11 @@ namespace NPrinting_Certificate_Configurator.Classes
         }
 
         /// <summary>
-        /// Restarts NPrinting's web engine service while raising status updates for event.
+        /// Restarts NPrinting's web engine service asynchronously while raising status
+        /// updates for event.
         /// </summary>
         /// <returns>True if successful, and false if not.</returns>
-        public bool RestartWebEngineService()
+        public async Task<bool> RestartWebEngineServiceAsync()
         {
             var service = new ServiceController("Qlik NPrinting Web Engine");
             TimeSpan timeout = TimeSpan.FromMinutes(1);
@@ -185,40 +186,40 @@ namespace NPrinting_Certificate_Configurator.Classes
 
             try
             {
-                if (service.Status != ServiceControllerStatus.Stopped)
+                return await Task.Run(() =>
                 {
-                    // Stop Service
-                    service.Stop();
-                    args.Status = "Stopping NPrinting web engine service...";
+                    if (service.Status != ServiceControllerStatus.Stopped)
+                    {
+                        service.Stop();
+                        args.Status = "Stopping NPrinting web engine service...";
+                        OnServiceStatusChanged(args);
+                        service.WaitForStatus(ServiceControllerStatus.Stopped, timeout);
+                    }
+
+                    service.Start();
+                    args.Status = "Starting NPrinting web engine service...";
                     OnServiceStatusChanged(args);
-                    service.WaitForStatus(ServiceControllerStatus.Stopped, timeout);
-                }
+                    service.WaitForStatus(ServiceControllerStatus.Running, timeout);
 
-                //Restart service
-                service.Start();
-                args.Status = "Starting NPrinting web engine service...";
-                OnServiceStatusChanged(args);
-                service.WaitForStatus(ServiceControllerStatus.Running, timeout);
-
-                args.Status = "Finished restarting service.";
-                OnServiceStatusChanged(args);
+                    args.Status = "Finished restarting service.";
+                    OnServiceStatusChanged(args);
+                    return true;
+                });
             }
             catch (InvalidOperationException)
             {
                 args.Status = "Failed to restart service.";
                 args.ErrorMessage = "The service was not found on this computer.";
                 OnServiceStatusChanged(args);
-                return false;
             }
             catch (System.ServiceProcess.TimeoutException)
             {
                 args.Status = "Failed to restart service.";
-                args.ErrorMessage = "The Qlik NPrinting Web Engine service timed out.";
+                args.ErrorMessage = "The service timed out.";
                 OnServiceStatusChanged(args);
-                return false;
             }
-            
-            return true;
+
+            return false;
         }
 
         /// <summary>
