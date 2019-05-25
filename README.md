@@ -8,15 +8,19 @@ Releases: [https://github.com/StevenJDH/NPrinting-Certificate-Configurator/relea
 Changelog: [https://github.com/StevenJDH/NPrinting-Certificate-Configurator/wiki/Changelog](https://github.com/StevenJDH/NPrinting-Certificate-Configurator/wiki/Changelog)
 
 ## Features
-* Converts a CA signed certificate before installing it and updating NPrinting's configuration automatically.
+* Automatically convert a CA signed certificate and install it.
+* Automatically update NPrinting's NewsStand and Web Console configuration to use the certificate.
 * Optionally create a configuration backup before making changes.
 * Restore configuration to revert back to using the default signed certificate.
 * Temporarily disable the use of the CA signed certificate to use the self-signed one.
-* Optionally restart the Qlik Web Engine service after the auto configuration process.
+* Optionally opt to restart the Qlik Web Engine service after the auto configuration process.
 
-## Requirements
+## Compatibility
 * Qlik NPrinting 17.0 or newer.
 * 64-bit operating systems only.
+
+## Disclaimer
+NPrinting Certificate Configurator is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 ## Do you have any questions?
 Many commonly asked questions are answered in the FAQ:
