@@ -88,6 +88,8 @@ namespace NPrinting_Certificate_Configurator
         {
             try
             {
+                btnConfigure.Enabled = false;
+                Properties.Settings.Default.NotProcessing = false;
                 toolStripServiceStatus.Text = "Initializing...";
 
                 var cert = new RSACryptoService(pfxFile: txtFile.Text, password: txtPassword.Text.Trim());
@@ -101,6 +103,8 @@ namespace NPrinting_Certificate_Configurator
 
                     txtFile.Text = "";
                     txtPassword.Text = "";
+                    btnConfigure.Enabled = true;
+                    Properties.Settings.Default.NotProcessing = true;
                     return;
                 }
 
@@ -151,10 +155,16 @@ namespace NPrinting_Certificate_Configurator
                 MessageBox.Show($"Error: {ex.Message}",
                     Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+
+            btnConfigure.Enabled = true;
+            Properties.Settings.Default.NotProcessing = true;
         }
 
         private async Task RestartServiceAsync()
         {
+            btnConfigure.Enabled = false;
+            Properties.Settings.Default.NotProcessing = false;
+
             if (await _np.RestartWebEngineServiceAsync())
             {
                 MessageBox.Show("The Qlik NPrinting Web Engine service was restarted successfully.",
@@ -166,6 +176,9 @@ namespace NPrinting_Certificate_Configurator
                                 "Please see status below for more information.",
                     Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
+
+            btnConfigure.Enabled = true;
+            Properties.Settings.Default.NotProcessing = true;
         }
 
         private void Np_ServiceStatusChanged(object sender, ServiceStatusChangedEventArgs e)
@@ -260,13 +273,44 @@ namespace NPrinting_Certificate_Configurator
 
         private void MnuDoc_Click(object sender, EventArgs e)
         {
+            OpenWebsite("https://help.qlik.com/en-US/nprinting/Content/NPrinting/" +
+                        "DeployingQVNprinting/Installing-ssl-certificates.htm");
+        }
+
+        private void MnuGitHub_Click(object sender, EventArgs e)
+        {
+            OpenWebsite("https://github.com/StevenJDH/NPrinting-Certificate-Configurator");
+        }
+
+        private void MnuFaq_Click(object sender, EventArgs e)
+        {
+            OpenWebsite("https://github.com/StevenJDH/NPrinting-Certificate-Configurator/wiki/FAQ");
+        }
+
+        private void MnuCheckUpdates_Click(object sender, EventArgs e)
+        {
+            OpenWebsite("https://github.com/StevenJDH/NPrinting-Certificate-Configurator/releases/latest");
+        }
+
+        /// <summary>
+        /// Sends a URL to the operating system to have it open in the default web browser.
+        /// </summary>
+        /// <param name="url">URL of website to open.</param>
+        private void OpenWebsite(string url)
+        {
             try
             {
-                // Sends URL to the operating system for opening.
-                Process.Start("https://help.qlik.com/en-US/nprinting/Content/NPrinting/" +
-                              "DeployingQVNprinting/Installing-ssl-certificates.htm");
+                Process.Start(url);
             }
             catch (Exception) {/* Consuming exceptions */ }
+        }
+
+        private void FrmMain_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (Properties.Settings.Default.NotProcessing == false)
+            {
+                e.Cancel = true;
+            }
         }
     }
 }
