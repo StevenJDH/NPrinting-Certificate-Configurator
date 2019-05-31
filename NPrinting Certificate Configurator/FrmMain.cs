@@ -205,7 +205,7 @@ namespace NPrinting_Certificate_Configurator
         {
             MessageBox.Show($"{Application.ProductName} {Application.ProductVersion} (Pre-Release)\n\n" +
                 "Steven Jenkins De Haro\n" +
-                "Microsoft .NET Framework 4.7.2\n\n" +
+                "Microsoft .NET Framework 4.5.2\n\n" +
                 "Special thanks to Sebastian Linser as this was his idea.",
                 Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
