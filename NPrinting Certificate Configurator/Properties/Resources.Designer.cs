@@ -59,5 +59,15 @@ namespace NPrinting_Certificate_Configurator.Properties {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap donation_button {
+            get {
+                object obj = ResourceManager.GetObject("donation_button", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
     }
 }

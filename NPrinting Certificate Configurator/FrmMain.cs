@@ -203,11 +203,10 @@ namespace NPrinting_Certificate_Configurator
 
         private void MnuAbout_Click(object sender, EventArgs e)
         {
-            MessageBox.Show($"{Application.ProductName} {Application.ProductVersion} (Pre-Release)\n\n" +
-                "Steven Jenkins De Haro\n" +
-                "Microsoft .NET Framework 4.5.2\n\n" +
-                "Special thanks to Sebastian Linser as this was his idea.",
-                Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Information);
+            using (FrmAbout frm = new FrmAbout())
+            {
+                frm.ShowDialog();
+            }
         }
 
         private void MnuDisableConfig_Click(object sender, EventArgs e)
@@ -296,7 +295,7 @@ namespace NPrinting_Certificate_Configurator
         /// Sends a URL to the operating system to have it open in the default web browser.
         /// </summary>
         /// <param name="url">URL of website to open.</param>
-        private void OpenWebsite(string url)
+        public static void OpenWebsite(string url)
         {
             try
             {
