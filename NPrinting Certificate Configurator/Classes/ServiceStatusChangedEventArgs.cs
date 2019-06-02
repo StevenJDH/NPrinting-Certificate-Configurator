@@ -24,6 +24,9 @@ using System.Threading.Tasks;
 
 namespace NPrinting_Certificate_Configurator.Classes
 {
+    /// <summary>
+    /// Contains event data for service status changes, including error information.
+    /// </summary>
     public class ServiceStatusChangedEventArgs : EventArgs
     {
         public string Status { get; set; }

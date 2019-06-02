@@ -127,6 +127,10 @@ namespace NPrinting_Certificate_Configurator.Classes
         /// Updates NPrinting's configuration files with the needed certificate entries for
         /// third-party certificates.
         /// </summary>
+        /// <remarks>
+        /// Assumes that the needed certificate entries are present in the conf file so that
+        /// they can be modified.
+        /// </remarks>
         /// <param name="configPath">Path to conf file.</param>
         /// <param name="crtPath">Path entry for public key in conf file.</param>
         /// <param name="keyPath">Path entry for private key in conf file.</param>

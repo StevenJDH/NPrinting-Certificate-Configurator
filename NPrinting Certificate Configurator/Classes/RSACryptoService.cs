@@ -31,9 +31,13 @@ namespace NPrinting_Certificate_Configurator.Classes
     {
         private readonly X509Certificate2 _certificate;
 
+        /// <summary>
+        /// Constructs a new <see cref="RSACryptoService"/> instance to work with a certificate.
+        /// </summary>
+        /// <param name="pfxFile">PFX certificate to load from file.</param>
+        /// <param name="password">Password associated with PFX certificate.</param>
         public RSACryptoService(string pfxFile, string password)
         {
-            // Load your certificate from file
             _certificate = new X509Certificate2(pfxFile, password,
                 X509KeyStorageFlags.Exportable | X509KeyStorageFlags.PersistKeySet);
 
@@ -70,15 +74,13 @@ namespace NPrinting_Certificate_Configurator.Classes
         /// </summary>
         public string Issuer { get; set; }
 
+        /// <summary>
+        /// Gets the public key from a certificate in Base64 PEM format.
+        /// </summary>
+        /// <returns>Base64 encoded public key.</returns>
         public string GetPublicKey()
         {
             var sb = new StringBuilder();
-
-            //sb.AppendLine("Bag Attributes");
-            //sb.AppendLine($"    Serial: {certificate.SerialNumber}");
-            //sb.AppendLine($"    Thumbprint: {certificate.Thumbprint}");
-            //sb.AppendLine($"subject={certificate.Subject}");
-            //sb.AppendLine($"issuer={certificate.Issuer}");
 
             sb.AppendLine("-----BEGIN CERTIFICATE-----");
             sb.AppendLine(ConvertEx.ToBase64String(_certificate.Export(X509ContentType.Cert), 64));
@@ -87,6 +89,10 @@ namespace NPrinting_Certificate_Configurator.Classes
             return sb.ToString();
         }
 
+        /// <summary>
+        /// Gets the decrypted private key from a certificate in Base64 PEM format.
+        /// </summary>
+        /// <returns>Base64 encoded private key that has been decrypted.</returns>
         public string GetPrivateKey()
         {
             var sb = new StringBuilder();
@@ -98,11 +104,21 @@ namespace NPrinting_Certificate_Configurator.Classes
             return sb.ToString();
         }
 
+        /// <summary>
+        /// Saves the Base64 PEM encoded public key to file. It's recommended to use a *.CRT,
+        /// *.CER, or *.PEM file extension for this file.
+        /// </summary>
+        /// <param name="path">Path for where to save the public key.</param>
         public void SavePublicKeyPem(string path)
         {
             File.WriteAllText(path, GetPublicKey());
         }
 
+        /// <summary>
+        /// Saves the Base64 PEM encoded and decrypted private key to file. It's recommended
+        /// to use a *.KEY or *.PEM file extension for this file.
+        /// </summary>
+        /// <param name="path">Path for where to save the private key.</param>
         public void SavePrivateKeyPem(string path)
         {
             File.WriteAllText(path, GetPrivateKey());

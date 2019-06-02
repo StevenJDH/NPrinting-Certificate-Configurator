@@ -32,13 +32,22 @@ namespace NPrinting_Certificate_Configurator.Extensions
     /// </summary>
     public static class X509Certificate2Extensions
     {
+        /// <summary>
+        /// Exports the current private key as a byte array.
+        /// </summary>
+        /// <param name="crt">Object owner of method.</param>
+        /// <returns>Private key as byte array.</returns>
+        /// <exception cref="T:System.NullReferenceException">Certificate instance is <see langword="null" />.</exception>
+        /// <exception cref="T:System.CryptographicException">Certificate does not contain a private key.</exception>
         public static byte[] ExportPrivateKey(this X509Certificate2 crt)
         {
-            var csp = crt.PrivateKey as RSACryptoServiceProvider;
-
+            if (!(crt.PrivateKey is RSACryptoServiceProvider csp))
+            {
+                throw new NullReferenceException("Certificate instance is null.");
+            }
             if (csp.PublicOnly)
             {
-                throw new ArgumentException("Certificate does not contain a private key", nameof(csp));
+                throw new CryptographicException("Certificate does not contain a private key.");
             }
 
             var parameters = csp.ExportParameters(true);
@@ -70,6 +79,14 @@ namespace NPrinting_Certificate_Configurator.Extensions
             }
         }
 
+        /// <summary>
+        /// Encodes integer based values using the Big-Endian convention to store byte data using the Most
+        /// Significant Bit First ordering sequence for Intel-based platforms that use the Little-Endian
+        /// convention.
+        /// </summary>
+        /// <param name="stream">Binary stream to write Big-Endian encoded bytes.</param>
+        /// <param name="value">Array of bytes to encode as Big-Endian</param>
+        /// <param name="forceUnsigned">Optionally force unsigned. The default is to force it.</param>
         private static void EncodeIntegerBigEndian(BinaryWriter stream, byte[] value, bool forceUnsigned = true)
         {
             stream.Write((byte)0x02); // INTEGER
@@ -106,11 +123,20 @@ namespace NPrinting_Certificate_Configurator.Extensions
             }
         }
 
+        /// <summary>
+        /// If the integer contains fewer than 128 bytes, the Length field requires only one byte to specify
+        /// the content length. If the integer is more than 127 bytes, bit 7 of the Length field is set to 1
+        /// and bits 6 through 0 specify the number of additional bytes used to identify the content length.
+        /// For additional information see:
+        /// https://docs.microsoft.com/en-us/windows/desktop/seccertenroll/about-encoded-length-and-value-bytes
+        /// </summary>
+        /// <param name="stream">Binary stream to write encoded bytes.</param>
+        /// <param name="length">Length of byte array.</param>
         private static void EncodeLength(BinaryWriter stream, int length)
         {
             if (length < 0)
             {
-                throw new ArgumentOutOfRangeException(nameof(length), "Length must be non-negative");
+                throw new ArgumentOutOfRangeException(nameof(length), "Length must be non-negative.");
             }
 
             if (length < 0x80)
