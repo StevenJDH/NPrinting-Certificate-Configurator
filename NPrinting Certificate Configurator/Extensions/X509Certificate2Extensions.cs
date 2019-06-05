@@ -28,10 +28,27 @@ using System.Threading.Tasks;
 namespace NPrinting_Certificate_Configurator.Extensions
 {
     /// <summary>
-    /// Useful extensions to overcome some missing functionality and limitations while keeping then code clean.
+    /// Useful extensions to overcome some missing functionality and limitations while keeping the code clean.
     /// </summary>
     public static class X509Certificate2Extensions
     {
+        /// <summary>
+        /// ASN.1 Universal Tag Numbers. More can be found here: https://www.obj-sys.com/asn1tutorial/node124.html
+        /// </summary>
+        private enum ASNTypeTag
+        {
+           Reserved = 0x00,
+           Boolean = 0x01,
+           Integer = 0x02,
+           BitString = 0x03,
+           OctetString = 0x04,
+           NullString = 0x05,
+           OID = 0x06,
+           UTF8String = 0x0C,
+           OIDRelative = 0x0D,
+           Sequence = 0x30
+        }
+
         /// <summary>
         /// Exports the current private key as a byte array.
         /// </summary>
@@ -55,12 +72,12 @@ namespace NPrinting_Certificate_Configurator.Extensions
             using (var stream = new MemoryStream())
             using (var writer = new BinaryWriter(stream))
             {
-                writer.Write((byte)0x30); // SEQUENCE
+                writer.Write((byte)ASNTypeTag.Sequence);
 
                 using (var innerStream = new MemoryStream())
                 using (var innerWriter = new BinaryWriter(innerStream))
                 {
-                    EncodeIntegerBigEndian(innerWriter, new byte[] { 0x00 }); // Version
+                    EncodeIntegerBigEndian(innerWriter, new byte[] { (byte)ASNTypeTag.Reserved }); // Version
                     EncodeIntegerBigEndian(innerWriter, parameters.Modulus);
                     EncodeIntegerBigEndian(innerWriter, parameters.Exponent);
                     EncodeIntegerBigEndian(innerWriter, parameters.D);
@@ -89,7 +106,7 @@ namespace NPrinting_Certificate_Configurator.Extensions
         /// <param name="forceUnsigned">Optionally force unsigned. The default is to force it.</param>
         private static void EncodeIntegerBigEndian(BinaryWriter stream, byte[] value, bool forceUnsigned = true)
         {
-            stream.Write((byte)0x02); // INTEGER
+            stream.Write((byte)ASNTypeTag.Integer);
             var prefixZeros = 0;
 
             for (var i = 0; i < value.Length; i++)

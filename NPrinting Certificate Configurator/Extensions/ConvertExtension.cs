@@ -25,7 +25,7 @@ using System.Threading.Tasks;
 namespace NPrinting_Certificate_Configurator.Extensions
 {
     /// <summary>
-    /// Useful extensions to overcome some missing functionality and limitations while keeping then code clean.
+    /// Useful extensions to overcome some missing functionality and limitations while keeping the code clean.
     /// </summary>
     public static class ConvertEx
     {
