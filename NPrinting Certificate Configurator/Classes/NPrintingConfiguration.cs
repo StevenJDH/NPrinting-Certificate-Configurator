@@ -90,10 +90,10 @@ namespace NPrinting_Certificate_Configurator.Classes
 
             // Qlik NPrinting Server February 2017 (17.3) or older until 17.0, since 16x is 32-bit.
             string programFiles = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
-            newsStand = Path.Combine(programFiles, "proxy", "newsstandproxy", "src", "qlik.com",
-                "newsstandproxy", "conf");
-            webConsole = Path.Combine(programFiles, "proxy", "webconsoleproxy", "src", "qlik.com",
-                "webconsoleproxy", "conf");
+            newsStand = Path.Combine(programFiles, "NPrintingServer", "proxy", "newsstandproxy", "src", 
+                "qlik.com", "newsstandproxy", "conf");
+            webConsole = Path.Combine(programFiles, "NPrintingServer", "proxy", "webconsoleproxy", "src", 
+                "qlik.com", "webconsoleproxy", "conf");
 
             NewsStand = new NConfig()
             {
