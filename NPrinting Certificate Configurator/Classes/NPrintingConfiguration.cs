@@ -23,6 +23,7 @@ using System.Linq;
 using System.ServiceProcess;
 using System.Text;
 using System.Threading.Tasks;
+using TimeoutException = System.ServiceProcess.TimeoutException;
 
 namespace NPrinting_Certificate_Configurator.Classes
 {
@@ -164,11 +165,11 @@ namespace NPrinting_Certificate_Configurator.Classes
 
             for (int i = 0; i < lines.Length; i++)
             {
-                if (lines[i].StartsWith("http.sslcert="))
+                if (lines[i].TrimStart().StartsWith("http.sslcert="))
                 {
                     lines[i] = $"#{lines[i]}";
                 }
-                if (lines[i].StartsWith("http.sslkey="))
+                if (lines[i].TrimStart().StartsWith("http.sslkey="))
                 {
                     lines[i] = $"#{lines[i]}";
                 }
@@ -216,7 +217,7 @@ namespace NPrinting_Certificate_Configurator.Classes
                 args.ErrorMessage = "The service was not found on this computer.";
                 OnServiceStatusChanged(args);
             }
-            catch (System.ServiceProcess.TimeoutException)
+            catch (TimeoutException)
             {
                 args.Status = "Failed to restart service.";
                 args.ErrorMessage = "The service timed out.";

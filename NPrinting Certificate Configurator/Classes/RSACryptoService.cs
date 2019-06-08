@@ -49,30 +49,30 @@ namespace NPrinting_Certificate_Configurator.Classes
         }
 
         /// <summary>
-        /// Gets a value that indicates whether an System.Security.Cryptography.X509Certificates.X509Certificate2
-        ///  object contains a private key.
+        /// A value that indicates whether the current <see cref="RSACryptoService"/> instance
+        /// contains a private key.
         /// </summary>
-        public bool HasPrivateKey { get; private set; }
+        public bool HasPrivateKey { get; }
 
         /// <summary>
-        /// Gets the serial number of a certificate.
+        /// The serial number of the certificate.
         /// </summary>
-        public string SerialNumber { get; set; }
+        public string SerialNumber { get; }
 
         /// <summary>
-        /// Gets the thumbprint of a certificate.
+        /// The thumbprint of the certificate.
         /// </summary>
-        public string Thumbprint { get; set; }
+        public string Thumbprint { get; }
 
         /// <summary>
-        /// Gets the subject distinguished name from the certificate.
+        /// The subject distinguished name of the certificate.
         /// </summary>
-        public string Subject { get; set; }
+        public string Subject { get; }
 
         /// <summary>
-        /// Gets the name of the certificate authority that issued the X.509v3 certificate.
+        /// The name of the certificate authority that issued the X.509v3 certificate.
         /// </summary>
-        public string Issuer { get; set; }
+        public string Issuer { get; }
 
         /// <summary>
         /// Gets the public key from a certificate in Base64 PEM format.
