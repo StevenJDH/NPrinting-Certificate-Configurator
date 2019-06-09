@@ -32,6 +32,11 @@
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuExit = new System.Windows.Forms.ToolStripMenuItem();
+            this.tasksToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuRestoreBackup = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuDisableConfig = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.mnuRestartService = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuDoc = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
@@ -50,11 +55,6 @@
             this.chkBackup = new System.Windows.Forms.CheckBox();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripServiceStatus = new System.Windows.Forms.ToolStripStatusLabel();
-            this.tasksToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.mnuRestoreBackup = new System.Windows.Forms.ToolStripMenuItem();
-            this.mnuDisableConfig = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.mnuRestartService = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -82,9 +82,47 @@
             // mnuExit
             // 
             this.mnuExit.Name = "mnuExit";
-            this.mnuExit.Size = new System.Drawing.Size(180, 22);
+            this.mnuExit.Size = new System.Drawing.Size(92, 22);
             this.mnuExit.Text = "Exit";
             this.mnuExit.Click += new System.EventHandler(this.MnuExit_Click);
+            // 
+            // tasksToolStripMenuItem
+            // 
+            this.tasksToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mnuRestoreBackup,
+            this.mnuDisableConfig,
+            this.toolStripSeparator1,
+            this.mnuRestartService});
+            this.tasksToolStripMenuItem.Enabled = global::NPrinting_Certificate_Configurator.Properties.Settings.Default.NotProcessing;
+            this.tasksToolStripMenuItem.Name = "tasksToolStripMenuItem";
+            this.tasksToolStripMenuItem.Size = new System.Drawing.Size(47, 20);
+            this.tasksToolStripMenuItem.Text = "Tasks";
+            // 
+            // mnuRestoreBackup
+            // 
+            this.mnuRestoreBackup.Name = "mnuRestoreBackup";
+            this.mnuRestoreBackup.Size = new System.Drawing.Size(232, 22);
+            this.mnuRestoreBackup.Text = "Restore Configuration Backup";
+            this.mnuRestoreBackup.Click += new System.EventHandler(this.MnuRestoreBackup_Click);
+            // 
+            // mnuDisableConfig
+            // 
+            this.mnuDisableConfig.Name = "mnuDisableConfig";
+            this.mnuDisableConfig.Size = new System.Drawing.Size(232, 22);
+            this.mnuDisableConfig.Text = "Disable Configuration";
+            this.mnuDisableConfig.Click += new System.EventHandler(this.MnuDisableConfig_Click);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(229, 6);
+            // 
+            // mnuRestartService
+            // 
+            this.mnuRestartService.Name = "mnuRestartService";
+            this.mnuRestartService.Size = new System.Drawing.Size(232, 22);
+            this.mnuRestartService.Text = "Restart Web Engine Service";
+            this.mnuRestartService.Click += new System.EventHandler(this.MnuRestartService_Click);
             // 
             // helpToolStripMenuItem
             // 
@@ -151,7 +189,7 @@
             this.btnConfigure.Location = new System.Drawing.Point(88, 184);
             this.btnConfigure.Name = "btnConfigure";
             this.btnConfigure.Size = new System.Drawing.Size(224, 48);
-            this.btnConfigure.TabIndex = 1;
+            this.btnConfigure.TabIndex = 3;
             this.btnConfigure.Text = "EZ-Configure";
             this.btnConfigure.UseVisualStyleBackColor = true;
             this.btnConfigure.Click += new System.EventHandler(this.BtnConfigure_Click);
@@ -165,6 +203,7 @@
             this.txtFile.ReadOnly = true;
             this.txtFile.Size = new System.Drawing.Size(384, 20);
             this.txtFile.TabIndex = 2;
+            this.txtFile.TabStop = false;
             this.txtFile.TextChanged += new System.EventHandler(this.TxtFile_TextChanged);
             // 
             // txtPassword
@@ -177,8 +216,9 @@
             this.txtPassword.Name = "txtPassword";
             this.txtPassword.PasswordChar = 'x';
             this.txtPassword.Size = new System.Drawing.Size(384, 20);
-            this.txtPassword.TabIndex = 3;
+            this.txtPassword.TabIndex = 1;
             this.txtPassword.TextChanged += new System.EventHandler(this.TxtPassword_TextChanged);
+            this.txtPassword.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TxtPassword_KeyDown);
             // 
             // btnBrowse
             // 
@@ -187,7 +227,7 @@
             this.btnBrowse.Location = new System.Drawing.Point(264, 72);
             this.btnBrowse.Name = "btnBrowse";
             this.btnBrowse.Size = new System.Drawing.Size(129, 32);
-            this.btnBrowse.TabIndex = 4;
+            this.btnBrowse.TabIndex = 0;
             this.btnBrowse.Text = "Browse";
             this.btnBrowse.UseVisualStyleBackColor = true;
             this.btnBrowse.Click += new System.EventHandler(this.BtnBrowse_Click);
@@ -222,7 +262,7 @@
             this.chkBackup.Location = new System.Drawing.Point(8, 160);
             this.chkBackup.Name = "chkBackup";
             this.chkBackup.Size = new System.Drawing.Size(166, 17);
-            this.chkBackup.TabIndex = 7;
+            this.chkBackup.TabIndex = 2;
             this.chkBackup.Text = "Create configuration backup?";
             this.chkBackup.UseVisualStyleBackColor = true;
             // 
@@ -246,44 +286,6 @@
             this.toolStripServiceStatus.Spring = true;
             this.toolStripServiceStatus.Text = "Idle";
             this.toolStripServiceStatus.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // tasksToolStripMenuItem
-            // 
-            this.tasksToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.mnuRestoreBackup,
-            this.mnuDisableConfig,
-            this.toolStripSeparator1,
-            this.mnuRestartService});
-            this.tasksToolStripMenuItem.Enabled = global::NPrinting_Certificate_Configurator.Properties.Settings.Default.NotProcessing;
-            this.tasksToolStripMenuItem.Name = "tasksToolStripMenuItem";
-            this.tasksToolStripMenuItem.Size = new System.Drawing.Size(47, 20);
-            this.tasksToolStripMenuItem.Text = "Tasks";
-            // 
-            // mnuRestoreBackup
-            // 
-            this.mnuRestoreBackup.Name = "mnuRestoreBackup";
-            this.mnuRestoreBackup.Size = new System.Drawing.Size(232, 22);
-            this.mnuRestoreBackup.Text = "Restore Configuration Backup";
-            this.mnuRestoreBackup.Click += new System.EventHandler(this.MnuRestoreBackup_Click);
-            // 
-            // mnuDisableConfig
-            // 
-            this.mnuDisableConfig.Name = "mnuDisableConfig";
-            this.mnuDisableConfig.Size = new System.Drawing.Size(232, 22);
-            this.mnuDisableConfig.Text = "Disable Configuration";
-            this.mnuDisableConfig.Click += new System.EventHandler(this.MnuDisableConfig_Click);
-            // 
-            // toolStripSeparator1
-            // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(229, 6);
-            // 
-            // mnuRestartService
-            // 
-            this.mnuRestartService.Name = "mnuRestartService";
-            this.mnuRestartService.Size = new System.Drawing.Size(232, 22);
-            this.mnuRestartService.Text = "Restart Web Engine Service";
-            this.mnuRestartService.Click += new System.EventHandler(this.MnuRestartService_Click);
             // 
             // FrmMain
             // 

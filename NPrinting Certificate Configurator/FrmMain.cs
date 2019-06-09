@@ -158,6 +158,8 @@ namespace NPrinting_Certificate_Configurator
 
             btnConfigure.Enabled = true;
             Properties.Settings.Default.NotProcessing = true;
+            txtPassword.Text = "";
+            txtPassword.Focus();
         }
 
         private async Task RestartServiceAsync()
@@ -309,6 +311,15 @@ namespace NPrinting_Certificate_Configurator
             if (Properties.Settings.Default.NotProcessing == false)
             {
                 e.Cancel = true;
+            }
+        }
+
+        private void TxtPassword_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter && btnConfigure.Enabled)
+            {
+                e.SuppressKeyPress = true;
+                BtnConfigure_Click(this, EventArgs.Empty);
             }
         }
     }
