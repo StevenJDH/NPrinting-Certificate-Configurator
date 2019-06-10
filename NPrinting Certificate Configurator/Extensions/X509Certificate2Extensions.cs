@@ -107,36 +107,29 @@ namespace NPrinting_Certificate_Configurator.Extensions
         private static void EncodeIntegerBigEndian(BinaryWriter stream, byte[] value, bool forceUnsigned = true)
         {
             stream.Write((byte)ASNTypeTag.Integer);
-            var prefixZeros = 0;
-
-            for (var i = 0; i < value.Length; i++)
-            {
-                if (value[i] != 0) break;
-                prefixZeros++;
-            }
+            var prefixZeros = value.TakeWhile(b => b == 0).Count();
 
             if (value.Length - prefixZeros == 0)
             {
                 EncodeLength(stream, 1);
                 stream.Write((byte)0);
+                return;
+            }
+
+            if (forceUnsigned && value[prefixZeros] > 0x7f)
+            {
+                // Add a prefix zero to force unsigned if the MSB is 1
+                EncodeLength(stream, value.Length - prefixZeros + 1);
+                stream.Write((byte)0);
             }
             else
             {
-                if (forceUnsigned && value[prefixZeros] > 0x7f)
-                {
-                    // Add a prefix zero to force unsigned if the MSB is 1
-                    EncodeLength(stream, value.Length - prefixZeros + 1);
-                    stream.Write((byte)0);
-                }
-                else
-                {
-                    EncodeLength(stream, value.Length - prefixZeros);
-                }
+                EncodeLength(stream, value.Length - prefixZeros);
+            }
 
-                for (var i = prefixZeros; i < value.Length; i++)
-                {
-                    stream.Write(value[i]);
-                }
+            for (var i = prefixZeros; i < value.Length; i++)
+            {
+                stream.Write(value[i]);
             }
         }
 
@@ -156,29 +149,28 @@ namespace NPrinting_Certificate_Configurator.Extensions
                 throw new ArgumentOutOfRangeException(nameof(length), "Length must be non-negative.");
             }
 
+            // Short form
             if (length < 0x80)
             {
-                // Short form
                 stream.Write((byte)length);
+                return;
             }
-            else
+
+            // Long form
+            var temp = length;
+            var bytesRequired = 0;
+
+            while (temp > 0)
             {
-                // Long form
-                var temp = length;
-                var bytesRequired = 0;
+                temp >>= 8;
+                bytesRequired++;
+            }
 
-                while (temp > 0)
-                {
-                    temp >>= 8;
-                    bytesRequired++;
-                }
+            stream.Write((byte)(bytesRequired | 0x80));
 
-                stream.Write((byte)(bytesRequired | 0x80));
-
-                for (var i = bytesRequired - 1; i >= 0; i--)
-                {
-                    stream.Write((byte)(length >> (8 * i) & 0xff));
-                }
+            for (var i = bytesRequired - 1; i >= 0; i--)
+            {
+                stream.Write((byte)(length >> (8 * i) & 0xff));
             }
         }
     }
