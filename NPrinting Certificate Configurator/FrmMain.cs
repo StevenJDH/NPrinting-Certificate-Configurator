@@ -156,17 +156,14 @@ namespace NPrinting_Certificate_Configurator
                     Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
-            btnConfigure.Enabled = true;
             Properties.Settings.Default.NotProcessing = true;
+            btnConfigure.Enabled = true;
             txtPassword.Text = "";
             txtPassword.Focus();
         }
 
         private async Task RestartServiceAsync()
         {
-            btnConfigure.Enabled = false;
-            Properties.Settings.Default.NotProcessing = false;
-
             if (await _np.RestartWebEngineServiceAsync())
             {
                 MessageBox.Show("The Qlik NPrinting Web Engine service was restarted successfully.",
@@ -178,9 +175,6 @@ namespace NPrinting_Certificate_Configurator
                                 "Please see status below for more information.",
                     Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
-
-            btnConfigure.Enabled = true;
-            Properties.Settings.Default.NotProcessing = true;
         }
 
         private void Np_ServiceStatusChanged(object sender, ServiceStatusChangedEventArgs e)
@@ -200,7 +194,13 @@ namespace NPrinting_Certificate_Configurator
 
         private async void MnuRestartService_Click(object sender, EventArgs e)
         {
+            btnConfigure.Enabled = false;
+            Properties.Settings.Default.NotProcessing = false;
+
             await RestartServiceAsync();
+
+            Properties.Settings.Default.NotProcessing = true;
+            ValidateFields();
         }
 
         private void MnuAbout_Click(object sender, EventArgs e)
@@ -213,6 +213,9 @@ namespace NPrinting_Certificate_Configurator
 
         private void MnuDisableConfig_Click(object sender, EventArgs e)
         {
+            btnConfigure.Enabled = false;
+            Properties.Settings.Default.NotProcessing = false;
+
             try
             {
                 _np.DisableConfig(_np.NewsStand.ConfigFile);
@@ -226,6 +229,9 @@ namespace NPrinting_Certificate_Configurator
                 MessageBox.Show($"Error: {ex.Message}",
                     Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+
+            Properties.Settings.Default.NotProcessing = true;
+            ValidateFields();
         }
         private void MnuRestoreBackup_Click(object sender, EventArgs e)
         {
@@ -235,6 +241,9 @@ namespace NPrinting_Certificate_Configurator
             {
                 return;
             }
+
+            btnConfigure.Enabled = false;
+            Properties.Settings.Default.NotProcessing = false;
 
             try
             {
@@ -270,6 +279,9 @@ namespace NPrinting_Certificate_Configurator
                 MessageBox.Show($"Error: {ex.Message}",
                     Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+
+            Properties.Settings.Default.NotProcessing = true;
+            ValidateFields();
         }
 
         private void MnuDoc_Click(object sender, EventArgs e)
