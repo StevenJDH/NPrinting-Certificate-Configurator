@@ -54,7 +54,7 @@ namespace NPrinting_Certificate_Configurator
 
         private void FrmAbout_Load(object sender, EventArgs e)
         {
-            lblTitleVer.Text = $"{Application.ProductName} v{Application.ProductVersion} (Pre-Release)";
+            lblTitleVer.Text = $"{Application.ProductName} v{Application.ProductVersion}";
             
             // We store the actual link this way in case we ever want to make changes to the link label.
             lnkGitHub.Links.Add(new LinkLabel.Link() { LinkData = "https://github.com/StevenJDH/NPrinting-Certificate-Configurator" });
