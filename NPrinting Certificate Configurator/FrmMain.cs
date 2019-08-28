@@ -71,7 +71,8 @@ namespace NPrinting_Certificate_Configurator
         private void ValidateFields()
         {
             btnConfigure.Enabled = (String.IsNullOrWhiteSpace(txtFile.Text) == false && 
-                String.IsNullOrWhiteSpace(txtPassword.Text) == false);
+                (String.IsNullOrWhiteSpace(txtPassword.Text) == false || 
+                chkPassword.Checked == false));
         }
 
         private void TxtFile_TextChanged(object sender, EventArgs e)
@@ -89,6 +90,7 @@ namespace NPrinting_Certificate_Configurator
             try
             {
                 btnConfigure.Enabled = false;
+                txtPassword.Enabled = false;
                 Properties.Settings.Default.NotProcessing = false;
                 toolStripServiceStatus.Text = "Initializing...";
 
@@ -104,6 +106,7 @@ namespace NPrinting_Certificate_Configurator
                     txtFile.Text = "";
                     txtPassword.Text = "";
                     btnConfigure.Enabled = true;
+                    txtPassword.Enabled = chkPassword.Checked;
                     Properties.Settings.Default.NotProcessing = true;
                     return;
                 }
@@ -143,9 +146,9 @@ namespace NPrinting_Certificate_Configurator
             }
             catch (CryptographicException)
             {
-                toolStripServiceStatus.Text = "Failed to configure NPrinting. Invalid certificate password provided.";
+                toolStripServiceStatus.Text = "Failed to configure NPrinting. Invalid certificate password.";
 
-                MessageBox.Show("Error: The password provided for the certificate is incorrect.",
+                MessageBox.Show("Error: The password provided for the certificate is incorrect, or one is not required.",
                     Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             catch (Exception ex) when (ex is IOException || ex is UnauthorizedAccessException)
@@ -157,6 +160,7 @@ namespace NPrinting_Certificate_Configurator
             }
 
             Properties.Settings.Default.NotProcessing = true;
+            txtPassword.Enabled = chkPassword.Checked;
             btnConfigure.Enabled = true;
             txtPassword.Text = "";
             txtPassword.Focus();
@@ -195,11 +199,13 @@ namespace NPrinting_Certificate_Configurator
         private async void MnuRestartService_Click(object sender, EventArgs e)
         {
             btnConfigure.Enabled = false;
+            txtPassword.Enabled = false;
             Properties.Settings.Default.NotProcessing = false;
 
             await RestartServiceAsync();
 
             Properties.Settings.Default.NotProcessing = true;
+            txtPassword.Enabled = chkPassword.Checked;
             ValidateFields();
         }
 
@@ -214,6 +220,7 @@ namespace NPrinting_Certificate_Configurator
         private void MnuDisableConfig_Click(object sender, EventArgs e)
         {
             btnConfigure.Enabled = false;
+            txtPassword.Enabled = false;
             Properties.Settings.Default.NotProcessing = false;
 
             try
@@ -231,6 +238,7 @@ namespace NPrinting_Certificate_Configurator
             }
 
             Properties.Settings.Default.NotProcessing = true;
+            txtPassword.Enabled = chkPassword.Checked;
             ValidateFields();
         }
         private void MnuRestoreBackup_Click(object sender, EventArgs e)
@@ -243,6 +251,7 @@ namespace NPrinting_Certificate_Configurator
             }
 
             btnConfigure.Enabled = false;
+            txtPassword.Enabled = false;
             Properties.Settings.Default.NotProcessing = false;
 
             try
@@ -281,6 +290,7 @@ namespace NPrinting_Certificate_Configurator
             }
 
             Properties.Settings.Default.NotProcessing = true;
+            txtPassword.Enabled = chkPassword.Checked;
             ValidateFields();
         }
 
@@ -333,6 +343,13 @@ namespace NPrinting_Certificate_Configurator
                 e.SuppressKeyPress = true;
                 BtnConfigure_Click(this, EventArgs.Empty);
             }
+        }
+
+        private void ChkPassword_CheckedChanged(object sender, EventArgs e)
+        {
+            txtPassword.Enabled = chkPassword.Checked;
+            txtPassword.Text = "";
+            ValidateFields();
         }
     }
 }

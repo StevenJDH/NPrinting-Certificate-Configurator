@@ -50,11 +50,11 @@
             this.txtPassword = new System.Windows.Forms.TextBox();
             this.btnBrowse = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.chkBackup = new System.Windows.Forms.CheckBox();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripServiceStatus = new System.Windows.Forms.ToolStripStatusLabel();
+            this.chkPassword = new System.Windows.Forms.CheckBox();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -209,8 +209,6 @@
             // txtPassword
             // 
             this.txtPassword.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtPassword.DataBindings.Add(new System.Windows.Forms.Binding("Enabled", global::NPrinting_Certificate_Configurator.Properties.Settings.Default, "NotProcessing", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.txtPassword.Enabled = global::NPrinting_Certificate_Configurator.Properties.Settings.Default.NotProcessing;
             this.txtPassword.Location = new System.Drawing.Point(8, 128);
             this.txtPassword.MaxLength = 256;
             this.txtPassword.Name = "txtPassword";
@@ -240,14 +238,6 @@
             this.label1.TabIndex = 5;
             this.label1.Text = "Select certificate in PFX format:";
             // 
-            // label2
-            // 
-            this.label2.Location = new System.Drawing.Point(6, 112);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(384, 16);
-            this.label2.TabIndex = 6;
-            this.label2.Text = "Certificate password:";
-            // 
             // openFileDialog1
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
@@ -259,7 +249,7 @@
             this.chkBackup.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkBackup.DataBindings.Add(new System.Windows.Forms.Binding("Enabled", global::NPrinting_Certificate_Configurator.Properties.Settings.Default, "NotProcessing", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.chkBackup.Enabled = global::NPrinting_Certificate_Configurator.Properties.Settings.Default.NotProcessing;
-            this.chkBackup.Location = new System.Drawing.Point(8, 160);
+            this.chkBackup.Location = new System.Drawing.Point(119, 161);
             this.chkBackup.Name = "chkBackup";
             this.chkBackup.Size = new System.Drawing.Size(166, 17);
             this.chkBackup.TabIndex = 2;
@@ -287,15 +277,30 @@
             this.toolStripServiceStatus.Text = "Idle";
             this.toolStripServiceStatus.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
+            // chkPassword
+            // 
+            this.chkPassword.AutoSize = true;
+            this.chkPassword.Checked = true;
+            this.chkPassword.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkPassword.DataBindings.Add(new System.Windows.Forms.Binding("Enabled", global::NPrinting_Certificate_Configurator.Properties.Settings.Default, "NotProcessing", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.chkPassword.Enabled = global::NPrinting_Certificate_Configurator.Properties.Settings.Default.NotProcessing;
+            this.chkPassword.Location = new System.Drawing.Point(8, 111);
+            this.chkPassword.Name = "chkPassword";
+            this.chkPassword.Size = new System.Drawing.Size(124, 17);
+            this.chkPassword.TabIndex = 9;
+            this.chkPassword.Text = "Certificate password:";
+            this.chkPassword.UseVisualStyleBackColor = true;
+            this.chkPassword.CheckedChanged += new System.EventHandler(this.ChkPassword_CheckedChanged);
+            // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.MintCream;
             this.ClientSize = new System.Drawing.Size(401, 264);
+            this.Controls.Add(this.chkPassword);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.chkBackup);
-            this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btnBrowse);
             this.Controls.Add(this.txtPassword);
@@ -328,7 +333,6 @@
         private System.Windows.Forms.TextBox txtPassword;
         private System.Windows.Forms.Button btnBrowse;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
         private System.Windows.Forms.CheckBox chkBackup;
         private System.Windows.Forms.ToolStripMenuItem tasksToolStripMenuItem;
@@ -347,6 +351,7 @@
         private System.Windows.Forms.ToolStripMenuItem mnuFaq;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
         private System.Windows.Forms.ToolStripMenuItem mnuCheckUpdates;
+        private System.Windows.Forms.CheckBox chkPassword;
     }
 }
 
