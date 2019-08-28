@@ -174,7 +174,7 @@
             this.Name = "FrmAbout";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "About NPrinting Certificate Configurator";
             this.Load += new System.EventHandler(this.FrmAbout_Load);
             this.groupBox1.ResumeLayout(false);
