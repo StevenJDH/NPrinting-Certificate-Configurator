@@ -1,4 +1,9 @@
 # NPrinting Certificate Configurator
+
+![GitHub All Releases](https://img.shields.io/github/downloads/StevenJDH/NPrinting-Certificate-Configurator/total)
+![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/StevenJDH/NPrinting-Certificate-Configurator?include_prereleases)
+![GitHub](https://img.shields.io/github/license/StevenJDH/NPrinting-Certificate-Configurator)
+
 This program is used to automatically install and configure Qlik NPrinting with a CA signed certificate automatically. There are various steps needed to do this manually, including converting the certificate to the correct format with OpenSSL, but these steps and or folder locations will vary depending on the version you use. NPrinting Certificate Configurator takes care of these error-prone steps with a click of a button.
 
 ![Program Screenshot](https://github.com/StevenJDH/NPrinting-Certificate-Configurator/raw/master/ncc-ss.jpg "Screenshot")
@@ -25,9 +30,6 @@ NPrinting Certificate Configurator is distributed in the hope that it will be us
 ## Do you have any questions?
 Many commonly asked questions are answered in the FAQ:
 [https://github.com/StevenJDH/NPrinting-Certificate-Configurator/wiki/FAQ](https://github.com/StevenJDH/NPrinting-Certificate-Configurator/wiki/FAQ)
-
-## Need to contact me?
-I can be reached here directly at [https://21.co/stevenjdh](https://21.co/stevenjdh "Contact Page")
 
 ## Want to show your support?
 
